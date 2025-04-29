@@ -419,12 +419,6 @@ variable "delete_automated_backups" {
   default     = true
 }
 
-variable "s3_import" {
-  description = "Restore from a Percona Xtrabackup in S3 (only MySQL is supported)"
-  type        = map(string)
-  default     = null
-}
-
 
 variable "restore_to_point_in_time" {
   description = "Restore to a point in time (MySQL is NOT supported)"

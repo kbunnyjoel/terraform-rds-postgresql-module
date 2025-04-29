@@ -97,18 +97,6 @@ resource "aws_db_instance" "this" {
     }
   }
 
-  dynamic "s3_import" {
-    for_each = var.s3_import != null ? [var.s3_import] : []
-
-    content {
-      source_engine         = "mysql"
-      source_engine_version = s3_import.value.source_engine_version
-      bucket_name           = s3_import.value.bucket_name
-      bucket_prefix         = lookup(s3_import.value, "bucket_prefix", null)
-      ingestion_role        = s3_import.value.ingestion_role
-    }
-  }
-
   tags = merge(var.tags, var.db_instance_tags)
 
   depends_on = [aws_cloudwatch_log_group.this]
@@ -144,18 +132,7 @@ resource "aws_cloudwatch_log_group" "this" {
 # Enhanced monitoring
 ################################################################################
 
-data "aws_iam_policy_document" "enhanced_monitoring" {
-  statement {
-    actions = [
-      "sts:AssumeRole",
-    ]
 
-    principals {
-      type        = "Service"
-      identifiers = ["monitoring.rds.amazonaws.com"]
-    }
-  }
-}
 
 resource "aws_iam_role" "enhanced_monitoring" {
   count = var.create_monitoring_role ? 1 : 0
@@ -201,4 +178,15 @@ resource "aws_secretsmanager_secret_rotation" "this" {
     duration                 = var.master_user_password_rotation_duration
     schedule_expression      = var.master_user_password_rotation_schedule_expression
   }
+}
+
+resource "random_id" "snapshot_identifier" {
+  count = var.create && !var.skip_final_snapshot ? 1 : 0
+
+  keepers = {
+    id                  = var.identifier
+    snapshot_identifier = var.snapshot_identifier
+  }
+
+  byte_length = 4
 }
