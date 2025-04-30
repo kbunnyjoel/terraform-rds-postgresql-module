@@ -13,22 +13,22 @@ resource "aws_db_instance" "this" {
   storage_type             = var.storage_type
   storage_encrypted        = var.storage_encrypted
   kms_key_id               = var.kms_key_id
-  license_model            = var.license_model
+#   license_model            = var.license_model
 
   db_name                             = var.db_name
   username                            = !local.is_replica ? var.username : null
   password                            = !local.is_replica && var.manage_master_user_password ? null : var.password
   port                                = var.port
-  domain                              = var.domain
-  domain_auth_secret_arn              = var.domain_auth_secret_arn
-  domain_dns_ips                      = var.domain_dns_ips
-  domain_fqdn                         = var.domain_fqdn
-  domain_iam_role_name                = var.domain_iam_role_name
-  domain_ou                           = var.domain_ou
-  iam_database_authentication_enabled = var.iam_database_authentication_enabled
-  custom_iam_instance_profile         = var.custom_iam_instance_profile
-  manage_master_user_password         = !local.is_replica && var.manage_master_user_password ? var.manage_master_user_password : null
-  master_user_secret_kms_key_id       = !local.is_replica && var.manage_master_user_password ? var.master_user_secret_kms_key_id : null
+#   domain                              = var.domain
+#   domain_auth_secret_arn              = var.domain_auth_secret_arn
+#   domain_dns_ips                      = var.domain_dns_ips
+#   domain_fqdn                         = var.domain_fqdn
+#   domain_iam_role_name                = var.domain_iam_role_name
+#   domain_ou                           = var.domain_ou
+#   iam_database_authentication_enabled = var.iam_database_authentication_enabled
+#   custom_iam_instance_profile         = var.custom_iam_instance_profile
+#   manage_master_user_password         = !local.is_replica && var.manage_master_user_password ? var.manage_master_user_password : null
+#   master_user_secret_kms_key_id       = !local.is_replica && var.manage_master_user_password ? var.master_user_secret_kms_key_id : null
 
   vpc_security_group_ids = var.vpc_security_group_ids
   db_subnet_group_name   = var.db_subnet_group_name
@@ -36,11 +36,11 @@ resource "aws_db_instance" "this" {
   option_group_name      = var.option_group_name
   network_type           = var.network_type
 
-  availability_zone      = var.availability_zone
+#   availability_zone      = var.availability_zone
   multi_az               = var.multi_az
   iops                   = var.iops
   storage_throughput     = var.storage_throughput
-  publicly_accessible    = var.publicly_accessible
+#   publicly_accessible    = var.publicly_accessible
   ca_cert_identifier     = var.ca_cert_identifier
   dedicated_log_volume   = var.dedicated_log_volume
   upgrade_storage_config = var.upgrade_storage_config
@@ -51,13 +51,13 @@ resource "aws_db_instance" "this" {
   maintenance_window          = var.maintenance_window
 
   # https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/blue-green-deployments.html
-  dynamic "blue_green_update" {
-    for_each = length(var.blue_green_update) > 0 ? [var.blue_green_update] : []
+#   dynamic "blue_green_update" {
+#     for_each = length(var.blue_green_update) > 0 ? [var.blue_green_update] : []
 
-    content {
-      enabled = try(blue_green_update.value.enabled, null)
-    }
-  }
+#     content {
+#       enabled = try(blue_green_update.value.enabled, null)
+#     }
+#   }
 
   snapshot_identifier       = var.snapshot_identifier
   copy_tags_to_snapshot     = var.copy_tags_to_snapshot
@@ -70,12 +70,12 @@ resource "aws_db_instance" "this" {
 
   replicate_source_db     = var.replicate_source_db
   replica_mode            = var.replica_mode
-  backup_retention_period = length(var.blue_green_update) > 0 ? coalesce(var.backup_retention_period, 1) : var.backup_retention_period
+#   backup_retention_period = length(var.blue_green_update) > 0 ? coalesce(var.backup_retention_period, 1) : var.backup_retention_period
   backup_window           = var.backup_window
   max_allocated_storage   = var.max_allocated_storage
   monitoring_interval     = var.monitoring_interval
   monitoring_role_arn     = var.monitoring_interval > 0 ? local.monitoring_role_arn : null
-  database_insights_mode  = var.database_insights_mode
+#   database_insights_mode  = var.database_insights_mode
 
   character_set_name              = var.character_set_name
   nchar_character_set_name        = var.nchar_character_set_name
@@ -85,27 +85,27 @@ resource "aws_db_instance" "this" {
   deletion_protection      = var.deletion_protection
   delete_automated_backups = var.delete_automated_backups
 
-  dynamic "restore_to_point_in_time" {
-    for_each = var.restore_to_point_in_time != null ? [var.restore_to_point_in_time] : []
+#   dynamic "restore_to_point_in_time" {
+#     for_each = var.restore_to_point_in_time != null ? [var.restore_to_point_in_time] : []
 
-    content {
-      restore_time                             = lookup(restore_to_point_in_time.value, "restore_time", null)
-      source_db_instance_automated_backups_arn = lookup(restore_to_point_in_time.value, "source_db_instance_automated_backups_arn", null)
-      source_db_instance_identifier            = lookup(restore_to_point_in_time.value, "source_db_instance_identifier", null)
-      source_dbi_resource_id                   = lookup(restore_to_point_in_time.value, "source_dbi_resource_id", null)
-      use_latest_restorable_time               = lookup(restore_to_point_in_time.value, "use_latest_restorable_time", null)
-    }
-  }
+#     content {
+#       restore_time                             = lookup(restore_to_point_in_time.value, "restore_time", null)
+#       source_db_instance_automated_backups_arn = lookup(restore_to_point_in_time.value, "source_db_instance_automated_backups_arn", null)
+#       source_db_instance_identifier            = lookup(restore_to_point_in_time.value, "source_db_instance_identifier", null)
+#       source_dbi_resource_id                   = lookup(restore_to_point_in_time.value, "source_dbi_resource_id", null)
+#       use_latest_restorable_time               = lookup(restore_to_point_in_time.value, "use_latest_restorable_time", null)
+#     }
+#   }
 
   tags = merge(var.tags, var.db_instance_tags)
 
   depends_on = [aws_cloudwatch_log_group.this]
 
-  timeouts {
-    create = lookup(var.timeouts, "create", null)
-    delete = lookup(var.timeouts, "delete", null)
-    update = lookup(var.timeouts, "update", null)
-  }
+#   timeouts {
+#     create = lookup(var.timeouts, "create", null)
+#     delete = lookup(var.timeouts, "delete", null)
+#     update = lookup(var.timeouts, "update", null)
+#   }
 
   # Note: do not add `latest_restorable_time` to `ignore_changes`
   # https://github.com/terraform-aws-modules/terraform-aws-rds/issues/478
@@ -167,18 +167,18 @@ resource "aws_iam_role_policy_attachment" "enhanced_monitoring" {
 # `manage_master_user_password_rotation` must be set to true first and applied followed by setting it to false and another apply.
 # Note: when setting `manage_master_user_password_rotation` to true, a schedule must also be set using `master_user_password_rotation_schedule_expression` or `master_user_password_rotation_automatically_after_days`.
 # See: https://github.com/hashicorp/terraform-provider-aws/issues/37779
-resource "aws_secretsmanager_secret_rotation" "this" {
-  count = var.create && var.manage_master_user_password && var.manage_master_user_password_rotation ? 1 : 0
+# resource "aws_secretsmanager_secret_rotation" "this" {
+#   count = var.create && var.manage_master_user_password && var.manage_master_user_password_rotation ? 1 : 0
 
-  secret_id          = aws_db_instance.this[0].master_user_secret[0].secret_arn
-  rotate_immediately = var.master_user_password_rotate_immediately
+#   secret_id          = aws_db_instance.this[0].master_user_secret[0].secret_arn
+#   rotate_immediately = var.master_user_password_rotate_immediately
 
-  rotation_rules {
-    automatically_after_days = var.master_user_password_rotation_automatically_after_days
-    duration                 = var.master_user_password_rotation_duration
-    schedule_expression      = var.master_user_password_rotation_schedule_expression
-  }
-}
+#   rotation_rules {
+#     automatically_after_days = var.master_user_password_rotation_automatically_after_days
+#     duration                 = var.master_user_password_rotation_duration
+#     schedule_expression      = var.master_user_password_rotation_schedule_expression
+#   }
+# }
 
 resource "random_id" "snapshot_identifier" {
   count = var.create && !var.skip_final_snapshot ? 1 : 0
