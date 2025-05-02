@@ -132,7 +132,7 @@ output "db_instance_cloudwatch_log_groups" {
 # Managed Secret Rotation
 ################################################################################
 
-output "db_instance_secretsmanager_secret_rotation_enabled" {
-  description = "Specifies whether automatic rotation is enabled for the secret"
-  value       = try(aws_secretsmanager_secret_rotation.this[0].rotation_enabled, null)
-}
+# output "db_instance_secretsmanager_secret_rotation_enabled" {
+#   description = "Specifies whether automatic rotation is enabled for the secret"
+#   value       = try(aws_secretsmanager_secret_rotation.this[0].rotation_enabled, null)
+# }
