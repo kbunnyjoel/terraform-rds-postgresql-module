@@ -99,7 +99,7 @@ resource "aws_db_instance" "this" {
 
   tags = merge(var.tags, var.db_instance_tags)
 
-  depends_on = [aws_cloudwatch_log_group.this]
+  # depends_on = [aws_cloudwatch_log_group.this]
 
 #   timeouts {
 #     create = lookup(var.timeouts, "create", null)
@@ -116,17 +116,17 @@ resource "aws_db_instance" "this" {
 ################################################################################
 
 # Log groups will not be created if using an identifier prefix
-resource "aws_cloudwatch_log_group" "this" {
-  for_each = toset([for log in var.enabled_cloudwatch_logs_exports : log if var.create && var.create_cloudwatch_log_group && !var.use_identifier_prefix])
+# resource "aws_cloudwatch_log_group" "this" {
+#   for_each = toset([for log in var.enabled_cloudwatch_logs_exports : log if var.create && var.create_cloudwatch_log_group && !var.use_identifier_prefix])
 
-  name              = "/aws/rds/instance/${var.identifier}/${each.value}"
-  # retention_in_days = var.cloudwatch_log_group_retention_in_days
-  kms_key_id        = var.cloudwatch_log_group_kms_key_id
-  skip_destroy      = var.cloudwatch_log_group_skip_destroy
-  log_group_class   = var.cloudwatch_log_group_class
+#   name              = "/aws/rds/instance/${var.identifier}/${each.value}"
+#   # retention_in_days = var.cloudwatch_log_group_retention_in_days
+#   kms_key_id        = var.cloudwatch_log_group_kms_key_id
+#   skip_destroy      = var.cloudwatch_log_group_skip_destroy
+#   log_group_class   = var.cloudwatch_log_group_class
 
-  tags = merge(var.tags, var.cloudwatch_log_group_tags)
-}
+#   tags = merge(var.tags, var.cloudwatch_log_group_tags)
+# }
 
 ################################################################################
 # Enhanced monitoring
