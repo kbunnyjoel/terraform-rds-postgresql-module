@@ -34,19 +34,19 @@ resource "aws_db_instance" "this" {
   db_subnet_group_name   = var.db_subnet_group_name
   parameter_group_name   = var.parameter_group_name
   option_group_name      = var.option_group_name
-  network_type           = var.network_type
+  # network_type           = var.network_type
 
 #   availability_zone      = var.availability_zone
   multi_az               = var.multi_az
-  iops                   = var.iops
-  storage_throughput     = var.storage_throughput
+  # iops                   = var.iops
+  # storage_throughput     = var.storage_throughput
 #   publicly_accessible    = var.publicly_accessible
   ca_cert_identifier     = var.ca_cert_identifier
-  dedicated_log_volume   = var.dedicated_log_volume
-  upgrade_storage_config = var.upgrade_storage_config
+  # dedicated_log_volume   = var.dedicated_log_volume
+  # upgrade_storage_config = var.upgrade_storage_config
 
-  allow_major_version_upgrade = var.allow_major_version_upgrade
-  auto_minor_version_upgrade  = var.auto_minor_version_upgrade
+  # allow_major_version_upgrade = var.allow_major_version_upgrade
+  # auto_minor_version_upgrade  = var.auto_minor_version_upgrade
   apply_immediately           = var.apply_immediately
   maintenance_window          = var.maintenance_window
 
@@ -68,8 +68,8 @@ resource "aws_db_instance" "this" {
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
   performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
 
-  replicate_source_db     = var.replicate_source_db
-  replica_mode            = var.replica_mode
+  # replicate_source_db     = var.replicate_source_db
+  # replica_mode            = var.replica_mode
 #   backup_retention_period = length(var.blue_green_update) > 0 ? coalesce(var.backup_retention_period, 1) : var.backup_retention_period
   backup_window           = var.backup_window
   max_allocated_storage   = var.max_allocated_storage
@@ -77,9 +77,9 @@ resource "aws_db_instance" "this" {
   monitoring_role_arn     = var.monitoring_interval > 0 ? local.monitoring_role_arn : null
 #   database_insights_mode  = var.database_insights_mode
 
-  character_set_name              = var.character_set_name
-  nchar_character_set_name        = var.nchar_character_set_name
-  timezone                        = var.timezone
+  # character_set_name              = var.character_set_name
+  # nchar_character_set_name        = var.nchar_character_set_name
+  # timezone                        = var.timezone
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
 
   deletion_protection      = var.deletion_protection
