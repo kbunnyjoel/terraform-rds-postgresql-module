@@ -59,10 +59,10 @@ resource "aws_db_instance" "this" {
 #     }
 #   }
 
-  snapshot_identifier       = var.snapshot_identifier
-  copy_tags_to_snapshot     = var.copy_tags_to_snapshot
-  skip_final_snapshot       = var.skip_final_snapshot
-  final_snapshot_identifier = local.final_snapshot_identifier
+  # snapshot_identifier       = var.snapshot_identifier
+  # copy_tags_to_snapshot     = var.copy_tags_to_snapshot
+  # skip_final_snapshot       = var.skip_final_snapshot
+  # final_snapshot_identifier = local.final_snapshot_identifier
 
   performance_insights_enabled          = var.performance_insights_enabled
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
